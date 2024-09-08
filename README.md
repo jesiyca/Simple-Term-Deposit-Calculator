@@ -51,3 +51,4 @@ Assumptions made throughout this assignment are:
 - Add validation for decimal numbers for each input type, eg. interest rate having two decimal points, not allowing decimals for start deposit amount and investment term.
 - Add comma separator for every thousand in the final balance and start deposit amount, after its been inputed, to be more readable - especially for larger amounts. Add dollar signs and percentage symbol for their respective input boxes instead of having it in the label. This would mean the value shown and the actual value would be slightly different (one would be a string and other would be a number).
 - Remove zeros in front of any of the numeric inputs if it was accidentally placed.
+- Probably would rename my variables for the calculation as I think it's a bit messy - I went with what sounded right at the time of coding.
