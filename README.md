@@ -28,19 +28,18 @@ yarn test
 ```
 
 ## Assumptions
-Assumptions made throughout this assignment are:
-- Timed myself for only design (how the calculator will look) and implementation. The two hours spent on designing and building a solution does not include the following: time spent researching, figuring out the formula/calculation for each type of interest paid, setting up/installing packages and dependencies, writing tests and README.
+- Timed myself for only design (how the calculator will look/behave) and implementation. The two hours spent on designing and building a solution does not include the following: time spent researching, figuring out the formula/calculation for each type of interest paid, setting up/installing packages and dependencies, writing tests and README.
 - Similarly to Bendigo Bank's calculator, the values are rounded up/down.
 
 ## Trade offs
 - Copied and pasted example component code snippets from shadcn UI website and kept their tailwind CSS styling - I just edited the logic to save time.
 - Used months as the only time input to keep calculations simple instead of using both months and years like Bendigo Bank's calculator.
 - Inputs are not validated by decimal, especially for start deposit amount and investment term as it would've taken more time.
-- Wrote only a few tests as I wasn't too sure if it was meant to be included in the time spent on implementation - so I just wrote a few for each input and changed values to validate that the calculations were as expected - to which I cross checked with Bendigo Bank's calculator.
+- Wrote only a few tests as I wasn't too sure if it was meant to be included with the time spent on implementation. I just wrote a few for each input component and changed values to validate that the calculations were as expected. If all the code were timed including tests, I probably would have ran out of time and would not have any written unit tests as I mainly tested by trial and error first by running the application locally and comparing my calculator's output values with Bendigo Bank's calculator.
 
 ## Design decisions
 - Decided to use only months for investment term to keep calculations simple. I referenced the compound interest formula [here](https://moneysmart.gov.au/saving/compound-interest) and tested the calculations on my own with the default inputs before writing it in code, figuring out the difference in formula between each calculation for interest paid periods first. This allowed me to save time while actually coding, although I did have a lot of trial and error as well to ensure that it was outputing the correct final balance.
-- Decided to follow the Bendigo Bank calculator's minimum and maximum values as I could easily cross check input/output values while also validating input to a certain range.
+- Decided to follow the Bendigo Bank calculator's behaviour and rough design (with slight changes for input components to save time). This includes adding minimum and maximum values so that I could easily cross check input/output values and allows for fast and easy valuation for input as it is confined a certain range.
 - Originally thought of creating a form for the input with a calculate button but when I looked at shadcn's form usage examples, they used Zod which would take longer to set up, write schemas for and learn to use.
 - Decided to use NextJS instead of React's create-react-app, which is what I'm used to professionally, as it has been deprecated and has vulnerability warnings. I already had some basic knowledge about NextJS so it wasn't too time-consuming to create a one-page app.
 - Used the shadcn/ui component library for quick React UI components without need of styling to make it look readable/presentable on my own.
