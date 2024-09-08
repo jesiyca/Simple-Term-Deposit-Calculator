@@ -29,10 +29,11 @@ yarn test
 
 ## Assumptions
 - Timed myself for only design (how the calculator will look/behave) and implementation. The two hours spent on designing and building a solution does not include the following: time spent researching, figuring out the formula/calculation for each type of interest paid, setting up/installing packages and dependencies, writing tests and README.
+- The assignment didn't have to be completed in one sitting, I took a couple breaks as I worked on it over the weekend and had a few plans inbetween.
 - Similarly to Bendigo Bank's calculator, the values are rounded up/down.
 
 ## Trade offs
-- Copied and pasted example component code snippets from shadcn UI website and kept their tailwind CSS styling - I just edited the logic to save time.
+- Copied and pasted example component code snippets from shadcn UI website and kept their tailwind CSS styling - I just edited the logic to save time. I have only briefly played around with tailwind CSS before, as I've only professionally used styled-components but shadcn was not compatible with it so I opted for tailwind CSS.
 - Used months as the only time input to keep calculations simple instead of using both months and years like Bendigo Bank's calculator.
 - Inputs are not validated by decimal, especially for start deposit amount and investment term as it would've taken more time.
 - Wrote only a few tests as I wasn't too sure if it was meant to be included with the time spent on implementation. I just wrote a few for each input component and changed values to validate that the calculations were as expected. If all the code were timed including tests, I probably would have ran out of time and would not have any written unit tests as I mainly tested by trial and error first by running the application locally and comparing my calculator's output values with Bendigo Bank's calculator.
