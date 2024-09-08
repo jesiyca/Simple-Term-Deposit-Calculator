@@ -12,10 +12,41 @@ export default function Home() {
   const [finalBalance, setFinalBalance] = useState(10330);
 
   useEffect(() => {
-    // A = P * (1 + r)^n
+    // formula for compound interest
+    // A = P * (1 + r) ^ n
+    let timeInPeriods = 0;
+    let interestRateOnePeriod = 0;
+  
+    if (interestPaid === "monthly") {
+      // calculate number of time in periods (n)
+      timeInPeriods = investmentTerm;
 
-    //setFinalBalance();
-  }, [depositAmount, interestRate, investmentTerm, interestPaid])
+      // calculate interest rate per period (r)
+      interestRateOnePeriod = (interestRate / 12) / 100;
+    } else if (interestPaid === "quarterly") {
+      // calculate number of time in periods (n)
+      timeInPeriods = investmentTerm / 3;
+
+      // calculate interest rate per period (r)
+      interestRateOnePeriod = (interestRate / 4) / 100;
+    } else if (interestPaid === "annually") {
+      // calculate number of time in periods (n)
+      timeInPeriods = investmentTerm / 12;
+
+      // calculate interest rate per period (r)
+      interestRateOnePeriod = interestRate / 100;
+    } else if (interestPaid === "atMaturity") {
+      // only one period (n)
+      timeInPeriods = 1;
+
+      // calculate interest rate per period (r)
+      interestRateOnePeriod = (interestRate / 100) * (investmentTerm / 12);
+    }
+  
+    // calculate compound interest (A)
+    const compoundInterest = depositAmount * Math.pow(1 + interestRateOnePeriod, timeInPeriods);
+    setFinalBalance(Math.round(compoundInterest));
+  }, [depositAmount, interestRate, investmentTerm, interestPaid]);
 
   const handleOnChangeDepositAmount = (e: React.FormEvent<HTMLInputElement>) => {
     const newValue = Number(e.currentTarget.value);
@@ -32,9 +63,8 @@ export default function Home() {
     setInvestmentTerm(newValue);
   }
 
-  const handleOnChangeInterestPaid = (e: React.FormEvent<HTMLInputElement>) => {
-    const newValue = e.currentTarget.value;
-    setInterestPaid(newValue);
+  const handleOnChangeInterestPaid = (value: string) => {
+    setInterestPaid(value);
   }
 
   const handleOnBlurDepositAmount = (e: React.FormEvent<HTMLInputElement>) => {
@@ -75,31 +105,32 @@ export default function Home() {
       <main className="flex flex-col gap-4 row-start-2 items-center sm:items-start">
         <header>Simple Term Deposit Calculator</header>
         <Label>Start deposit amount ($)</Label>
-        <Input type="number" min="1000" max="1500000" value={depositAmount} onChange={handleOnChangeDepositAmount} onBlur={handleOnBlurDepositAmount}/>
+        <Input type="number" value={depositAmount} onChange={handleOnChangeDepositAmount} onBlur={handleOnBlurDepositAmount}/>
         <Label>Interest rate (% p.a)</Label>
-        <Input type="number" min="0" max="15" value={interestRate} onChange={handleOnChangeInterestRate} onBlur={handleOnBlurInterestRate}/>
+        <Input type="number" value={interestRate} onChange={handleOnChangeInterestRate} onBlur={handleOnBlurInterestRate}/>
         <Label>Investment term (months)</Label>
-        <Input type="number" min="3" max="60" value={investmentTerm} onChange={handleOnChangeInvestmentTerm} onBlur={handleOnBlurInvestmentTerm}/>
+        <Input type="number" value={investmentTerm} onChange={handleOnChangeInvestmentTerm} onBlur={handleOnBlurInvestmentTerm}/>
         <Label>Interest paid</Label>
-        <RadioGroup defaultValue={interestPaid} onChange={handleOnChangeInterestPaid}>
+        <RadioGroup defaultValue={interestPaid} onValueChange={handleOnChangeInterestPaid}>
             <div className="flex items-center space-x-2">
-            <RadioGroupItem value="monthly" id="r1" />
+            <RadioGroupItem value="monthly" id="r1"/>
             <Label htmlFor="r1">Monthly</Label>
             </div>
             <div className="flex items-center space-x-2">
             <RadioGroupItem value="quarterly" id="r2" />
             <Label htmlFor="r2">Quarterly</Label>
             </div>
-            <div className="flex items-center space-x-2">
-            <RadioGroupItem value="annually" id="r3" />
-            <Label htmlFor="r3">Annually</Label>
-            </div>
+            { investmentTerm >= 12 ? (
+              <div className="flex items-center space-x-2">
+              <RadioGroupItem value="annually" id="r3" />
+              <Label htmlFor="r3">Annually</Label>
+              </div>
+            ) : ( undefined )}
             <div className="flex items-center space-x-2">
             <RadioGroupItem value="atMaturity" id="r4" />
             <Label htmlFor="r4">At Maturity</Label>
             </div>
         </RadioGroup>
-        
         <Label>Final balance ($)</Label>
             <Input disabled type="number" value={finalBalance}/>
       </main>
