@@ -60,6 +60,9 @@ export default function Home() {
 
   const handleOnChangeInvestmentTerm = (e: React.FormEvent<HTMLInputElement>) => {
     const newValue = Number(e.currentTarget.value);
+    if (newValue < 12 && interestPaid === "annually") {
+      setInterestPaid("atMaturity");
+    }
     setInvestmentTerm(newValue);
   }
 
@@ -103,36 +106,56 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-4 row-start-2 items-center sm:items-start">
-        <header>Simple Term Deposit Calculator</header>
-        <Label>Start deposit amount ($)</Label>
-        <Input type="number" value={depositAmount} onChange={handleOnChangeDepositAmount} onBlur={handleOnBlurDepositAmount}/>
-        <Label>Interest rate (% p.a)</Label>
-        <Input type="number" value={interestRate} onChange={handleOnChangeInterestRate} onBlur={handleOnBlurInterestRate}/>
-        <Label>Investment term (months)</Label>
-        <Input type="number" value={investmentTerm} onChange={handleOnChangeInvestmentTerm} onBlur={handleOnBlurInvestmentTerm}/>
-        <Label>Interest paid</Label>
-        <RadioGroup defaultValue={interestPaid} onValueChange={handleOnChangeInterestPaid}>
+        <header>
+          Simple Term Deposit Calculator
+        </header>
+        <Label data-testid="depositAmount-label">
+          Start deposit amount ($)
+        </Label>
+        <Input type="number" value={depositAmount} onChange={handleOnChangeDepositAmount} onBlur={handleOnBlurDepositAmount} data-testid="depositAmount-input"/>
+        <Label data-testid="interestRate-label">
+          Interest rate (% p.a)
+        </Label>
+        <Input type="number" value={interestRate} onChange={handleOnChangeInterestRate} onBlur={handleOnBlurInterestRate} data-testid="interestRate-input"/>
+        <Label data-testid="investmentTerm-label">
+          Investment term (months)
+        </Label>
+        <Input type="number" value={investmentTerm} onChange={handleOnChangeInvestmentTerm} onBlur={handleOnBlurInvestmentTerm} data-testid="investmentTerm-input"/>
+        <Label data-testid="interestPaid-label">
+          Interest paid
+        </Label>
+        <RadioGroup defaultValue={interestPaid} onValueChange={handleOnChangeInterestPaid} data-testid="interestPaid-radioGroup">
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="monthly" id="r1" data-testid="monthly-radio"/>
+            <Label htmlFor="r1" data-testid="monthly-label">
+              Monthly
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="quarterly" id="r2" data-testid="quarterly-radio"/>
+            <Label htmlFor="r2" data-testid="quarterly-label">
+              Quarterly
+            </Label>
+          </div>
+          { investmentTerm >= 12 ? (
             <div className="flex items-center space-x-2">
-            <RadioGroupItem value="monthly" id="r1"/>
-            <Label htmlFor="r1">Monthly</Label>
+              <RadioGroupItem value="annually" id="r3" data-testid="annually-radio"/>
+              <Label htmlFor="r3" data-testid="annually-label">
+                Annually
+              </Label>
             </div>
-            <div className="flex items-center space-x-2">
-            <RadioGroupItem value="quarterly" id="r2" />
-            <Label htmlFor="r2">Quarterly</Label>
-            </div>
-            { investmentTerm >= 12 ? (
-              <div className="flex items-center space-x-2">
-              <RadioGroupItem value="annually" id="r3" />
-              <Label htmlFor="r3">Annually</Label>
-              </div>
             ) : ( undefined )}
-            <div className="flex items-center space-x-2">
-            <RadioGroupItem value="atMaturity" id="r4" />
-            <Label htmlFor="r4">At Maturity</Label>
-            </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="atMaturity" id="r4" data-testid="atMaturity-radio"/>
+            <Label htmlFor="r4" data-testid="atMaturity-label">
+              At Maturity
+            </Label>
+          </div>
         </RadioGroup>
-        <Label>Final balance ($)</Label>
-            <Input disabled type="number" value={finalBalance}/>
+        <Label data-testid="finalBalance-label">
+          Final balance ($)
+        </Label>
+        <Input disabled type="number" value={finalBalance} data-testid="finalBalance-input"/>
       </main>
     </div>
   );
