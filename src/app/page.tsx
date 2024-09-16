@@ -3,13 +3,22 @@ import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+
+type DepositTable = {
+  month: Number; 
+  interestEarned: Number;
+  balance: Number;
+}
 
 export default function Home() {
+  
   const [depositAmount, setDepositAmount] = useState(10000);
   const [interestRate, setInterestRate] = useState(1.10);
   const [investmentTerm, setInvestmentTerm] = useState(36);
   const [interestPaid, setInterestPaid] = useState("atMaturity");
   const [finalBalance, setFinalBalance] = useState(10330);
+  const [depositTable, setDepositTable] = useState<DepositTable[]>([]);
 
   useEffect(() => {
     // formula for compound interest
@@ -19,10 +28,31 @@ export default function Home() {
   
     if (interestPaid === "monthly") {
       // calculate number of time in periods (n)
+      // get amount of months
       timeInPeriods = investmentTerm;
 
       // calculate interest rate per period (r)
       interestRateOnePeriod = (interestRate / 12) / 100;
+
+      // interest earned = balance * ((rate / 100 ) / 12 )
+      let balance = depositAmount;
+      let interestEarned = 0;
+      let termDepositArray = [];
+      for (let i = 0; i < investmentTerm; i++) {
+        let interestCalculation = balance * ((interestRate / 100) / 12)
+        interestEarned += interestCalculation;
+        balance += interestCalculation;
+        
+        const termDepositInput : DepositTable = {
+          month: i + 1,
+          interestEarned: Math.round(interestEarned * 100) / 100,
+          balance: Math.round(balance * 100) / 100
+        }
+        // month, interest earned and balance
+        termDepositArray.push(termDepositInput)
+      }
+      
+      setDepositTable(termDepositArray);
     } else if (interestPaid === "quarterly") {
       // calculate number of time in periods (n)
       timeInPeriods = investmentTerm / 3;
@@ -156,6 +186,27 @@ export default function Home() {
           Final balance ($)
         </Label>
         <Input disabled type="number" value={finalBalance} data-testid="finalBalance-input"/>
+
+        { interestPaid === "monthly" ? (
+          <Table data-testid="depositTable">
+          <TableHeader>
+            <TableRow key="">
+              <TableHead>Month</TableHead>
+              <TableHead>Interest earned ($)</TableHead>
+              <TableHead>Balance ($)</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {depositTable.map((deposit) => (
+              <TableRow>
+                <TableCell data-testid={"depositTable-month-cell" + deposit.month}>{String(deposit.month)}</TableCell>
+                <TableCell data-testid={"depositTable-interestEarned-cell" + deposit.month}>{String(deposit.interestEarned)}</TableCell>
+                <TableCell data-testid={"depositTable-balance-cell" + deposit.month}>{String(deposit.balance)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        ) : ( undefined )}
       </main>
     </div>
   );

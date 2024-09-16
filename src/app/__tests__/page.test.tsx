@@ -167,4 +167,17 @@ describe("Home page", () => {
     expect(screen.getByTestId('annually-radio')).toBeChecked();
     expect(screen.getByTestId('finalBalance-input')).toHaveDisplayValue("10334");
   });
+
+  it('should successfully show deposit table', () => {
+    render(<Page />);
+
+    fireEvent.click(screen.getByTestId('monthly-radio'));
+
+    expect(screen.getByTestId('depositAmount-input')).toHaveDisplayValue("10000");
+    expect(screen.getByTestId('interestRate-input')).toHaveDisplayValue("1.1");
+    expect(screen.getByTestId('investmentTerm-input')).toHaveDisplayValue("36");
+    expect(screen.getByTestId('monthly-radio')).toBeChecked();
+    expect(screen.getByTestId('finalBalance-input')).toHaveDisplayValue("10335");
+    expect(screen.getByTestId('depositTable')).toBeInTheDocument();
+  });
 });
